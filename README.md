@@ -2,7 +2,7 @@
 
 I have spent twenty years in HSE across mining, construction, and government. The gap I kept running into was the distance between raw incident data and a clear picture of what was actually happening on site. Rates were calculated in spreadsheets with hardcoded denominators, near-miss trends were invisible until someone noticed them in a meeting, and corrective action close-out was tracked in a register that nobody queried. These projects are how I closed that gap for myself.
 
-The dataset underpinning all four projects is a 500-row incident register built to mirror the structure of real operational data across five Western Australian sites. It includes the noise that real registers carry: inconsistent contractor coding, partial exposure hour records, and corrective action backlogs that accumulate across years. Cleaning and accounting for that noise is part of the work.
+The dataset underpinning all four projects is a 500-row incident register built to mirror the structure of real operational data across five Western Australian sites. It includes the noise that real registers carry: exposure hour figures that conflict within the same reporting month, and a corrective action backlog that accumulates across years. Finding and accounting for that noise is part of the work — the data quality audits in Projects 1 and 2 document what was found and what was ruled out.
 
 ---
 
@@ -14,7 +14,7 @@ Seven analytical sections built in BigQuery Standard SQL, progressing from a dat
 [View project →](./01_sql_hse_analytics/)
 
 ### 02 — Excel
-A five-sheet workbook covering data cleaning, SUMIFS-driven KPI calculation, PivotTable analysis, and an executive dashboard with traffic-light conditional formatting. SUMIFS was chosen over PivotTables for the KPI sheet because it recalculates dynamically without requiring a manual refresh — a practical consideration in any live reporting environment.
+The same register rebuilt as a five-sheet reporting workbook: Power Query import with locale-verified date parsing, a deduplicated exposure table, SUMIFS-driven TRIFR and LTIFR, PivotTable analysis with connected slicers, and an executive dashboard with traffic-light thresholds. The exposure sheet carries the methodology — monthly hours repeat on every incident row and conflict within 128 of the 144 site-month combinations, so they are collapsed with MAXIFS under the same maximum-hours assumption my SQL build documents, and the two projects reconcile to the decimal: 14,492,423 exposure hours in both. The KPI sheet is deliberately formula-based rather than a PivotTable, so the dashboard always reads from a fixed layout that survives refresh and field changes.
 
 [View project →](./02_excel_hse_workbook/)
 
