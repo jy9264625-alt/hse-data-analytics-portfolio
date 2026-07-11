@@ -1,12 +1,12 @@
-Power BI — HSE Compliance Dashboard
+# Power BI — HSE Compliance Dashboard
 
-The Problem
+## The Problem
 
 Every HSE report I've written eventually gets asked the same question: is this getting better or worse compared to last year? A static spreadsheet answers that once, for one point in time. Somebody has to rebuild it next quarter, and the quarter after that. This project is my answer to that problem — a report that carries its own time intelligence, so the comparison updates itself every time someone opens the file, at whatever level of the business they're looking at.
 
 It's also the platform-fluency piece of this portfolio. Tableau shows up elsewhere in my study plan, but Power BI is what I've actually built with mining and construction clients before, and DAX measures written from scratch demonstrate a different kind of technical depth than a PivotTable does.
 
-What Was Built
+## What Was Built
 
 A four-page Power BI report, built on the same 500-row incident register that reconciles against the SQL, Excel, and Python projects in this portfolio.
 
@@ -20,7 +20,7 @@ Page 4 — Compliance & Corrective Actions. Incident volume by age bracket, inve
 
 Screenshots of all four pages sit in the screenshots/ folder. The full build guide, including every DAX measure and the reasoning behind each one, is in HSE_PowerBI_Project.md.
 
-Technical Notes
+## Technical Notes
 
 Dim_Date is not optional. Every time-intelligence measure in this report — the year-over-year TRIFR comparison in particular — depends on SAMEPERIODLASTYEAR() walking back through a continuous calendar. I built a dedicated Dim_Date table with CALENDAR(), explicitly marked it as a date table, and related it to the fact table on the Date field. Skip that step and the time-intelligence measures don't error out loudly — they return blank, which looks like "no data" rather than "broken relationship." That's a worse failure mode, because it's silent.
 
@@ -32,7 +32,7 @@ Days Open uses subtraction, not DATEDIFF. DATEDIFF(incident_log[Date], TODAY(), 
 
 The age bracket chart is a limitation worth stating plainly. Because every incident date in this register sits in 2022–2024 and the report is being built and viewed years later, effectively all 500 incidents fall into the "90+ days" bracket. The bracket logic itself is sound and would behave correctly against live, current data — it's the synthetic dataset's fixed historical dates that make this particular visual less informative than it would be in a real, ongoing HSE program. I've kept it in because the DAX pattern (SWITCH(TRUE(), ...)) is a genuinely useful technique to demonstrate, even though this dataset doesn't show it off well.
 
-How to Use It
+## How to Use It
 
 Open HSE_PowerBI_Dashboard.pbix in Power BI Desktop. Year and Quarter slicers on pages 2 through 4 are synced — set them once on any page and the filter carries across the rest of the report. Page 1 has no slicers by design; it's meant to be the unfiltered, current-state view a leadership team sees first.
 
